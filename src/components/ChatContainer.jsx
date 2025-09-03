@@ -2,7 +2,7 @@ import React, { useEffect ,useRef} from 'react'
 import assets, { messagesDummyData } from '../assets/assets'
 import { formatMessageTime } from '../lib/utils'
 
-const ChatContainer = (selectedUser, setSelectedUser) => {
+const ChatContainer = ({selectedUser, setSelectedUser}) => {
 
   const scrollEnd = useRef()
 
@@ -14,9 +14,9 @@ const ChatContainer = (selectedUser, setSelectedUser) => {
 
 
   return selectedUser ? (
-    <div className='h-full overflow-scroll relative backdrop-blur-lg'>
+    <div className=' h-full overflow-scroll relative backdrop-blur-lg'>
       {/* ----Header----- */}
-        <div className='flex items-center gap-3 py-3 mx-4 border-b border-stone-500'>
+        <div className='sticky top-0 z-10 flex items-center gap-3 py-3 mx-4 border-b border-stone-500 bg-black backdrop-blur-md'>
           <img src={assets.profile_martin} alt="" className='w-8 rounded-full' />
           <p className='flex-1 text-lg text-white flex items-center gap-2'>
             Martin Johnson
@@ -44,7 +44,7 @@ const ChatContainer = (selectedUser, setSelectedUser) => {
         </div>
 
   {/*---- Bottom area ------ */}
-          <div className=' bottom-0 left-0 right-0 flex items-center gap-3 p-3'>
+          <div className=' sticky bottom-0 left-0 right-0 flex items-center gap-3 p-3'>
               <div className='flex-1 flex items-center bg-gray-100/20 px-3 rounded-full'>
                 <input type="text" placeholder='Send a message' className='flex-1 text-sm p-3 border-none rounded-lg outline-none text-white placeholder-gray-400'/>
                 <input type="file" id='image' accept='image/png, image/jpeg' hidden/>
