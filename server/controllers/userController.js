@@ -5,7 +5,7 @@ import cloudinary from "../lib/cloudinary.js";
 
 
 //Signup a new user
-export const signip = async (req,res)=>{
+export const signup = async (req,res)=>{
     const { fullName, email, password,bio } = req.body;
 
     try  {
@@ -73,7 +73,9 @@ export const updateProfile = async(req,res)=>{
 
             updatedUser = await User.findByIdAndUpdate(userId, {profilePic: upload.secure_url, bio, fullName}, {new:true});
         }
+        res.json({success: true, user: updatedUser})
     } catch (error) {
-        
+        console.log(error.message);
+        res.json({success: false, message: error.message})
     }
 }
