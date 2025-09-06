@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import assets from '../assets/assets'
+import { useContext } from 'react'
+import { AuthContext } from '../../context/AuthContext'
+import { ChatContext } from '../../context/ChatContext'
 
 const LoginPage = () => {
 
@@ -10,13 +13,19 @@ const LoginPage = () => {
   const [bio, setBio] = useState("")
   const [isDataSubmitted, setIsDataSubmitted] = useState(false);
 
-  const onSubmitHandler = (event)=>{
+  const {login} = useContext(AuthContext)
+  
+
+  const onSubmitHandler = async (event)=>{
     event.preventDefault();
 
     if(currState === 'Sign up' && !isDataSubmitted){
       setIsDataSubmitted(true)
       return;
     }
+
+    await login(currState === "Sign up" ? 'signup' : 'login' ,{fullName, email, password, bio});
+
   }
 
   return (
@@ -65,7 +74,7 @@ const LoginPage = () => {
           </div>
           <div className='flex flex-col gap-2'>
               {currState === "Sign up" ? (
-                <p className='text-sm text-gray-600'>Aalready hava na account? <span onClick={()=>{setCurrState("Login"); setIsDataSubmitted(false)}} className='font-medium text-violet-500 cursor-pointer'>Login here</span></p>
+                <p className='text-sm text-gray-600'>Already have an account? <span onClick={()=>{setCurrState("Login"); setIsDataSubmitted(false)}} className='font-medium text-violet-500 cursor-pointer'>Login here</span></p>
               ) : (
                 <p className='text-sm text-gray-600'>Create an account <span onClick={()=>setCurrState("Sign up")} className='font-medium text-violet-500 cursor-pointer' >Click here</span></p>
               )}

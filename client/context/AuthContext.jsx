@@ -2,6 +2,8 @@ import { createContext, useEffect, useState } from "react";
 import axios from 'axios';
 import toast from "react-hot-toast";
 import {io} from "socket.io-client"
+// import AuthProvider, { AuthContext } from "../../context/AuthContext";
+
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 axios.defaults.baseURL = backendUrl;
@@ -49,6 +51,29 @@ export const AuthProvider = ({ children })=>{
 
     //Logout function to handle user logout and socket disconnection
 
+    const logout = async ()=>{
+        localStorage.removeItem("token");
+        setToken(null);
+        setAuthUser(null);
+        setOnlineUsers([]);
+        axios.defaults.headers.common["token"] = null;
+        toast.success("Logged out successfully")
+        socket.disconnect();
+    }
+
+    //Update profile function to handle user profile updates
+
+    const updateProfile = async (body)=>{
+        try {
+            const { data } = await axios.put("/api/auth/update-profile",body);
+            if(data.success){
+                setAuthUser(data.user);
+                toast.success("Profile update successfully")
+            }
+        } catch (error) {
+            toast.error(error.message)
+        }
+    }
 
     //Connect socket function to handle socket connection and online users updates
     const connectSocket = (userData)=>{
@@ -69,15 +94,24 @@ export const AuthProvider = ({ children })=>{
     useEffect(()=>{
         if(token){
             axios.defaults.headers.common["token"] = token;
+        } else{
+            delete axios.defaults.headers.comma["token"];
         }
-        checkAuth()
-    },[])
+        },[token]);
+
+        useEffect(() => {
+            checkAuth();
+        },[]);
 
     const value = {
         axios,
         authUser,
         onlineUsers,
-        socket
+        socket,
+        login,
+        logout,
+        updateProfile,
+
     }
 
     return (
