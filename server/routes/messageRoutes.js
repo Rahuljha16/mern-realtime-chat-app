@@ -4,9 +4,16 @@ import { getMessages, getUsersForSidebar, markMessageAsSeen, sendMessage } from 
 
 const messageRouter = express.Router();
 
-messageRouter.get("/users",protectRoute, getUsersForSidebar);
-messageRouter.get("/:id",protectRoute, getMessages);
-messageRouter.put("/mark/:id",protectRoute,markMessageAsSeen);
-messageRouter.post("/send/:id",protectRoute,sendMessage)
+// Get all users for sidebar
+messageRouter.get("/users", protectRoute, getUsersForSidebar);
+
+// Get messages for a specific user
+messageRouter.get("/:id", protectRoute, getMessages);
+
+// Mark a message as seen
+messageRouter.put("/mark/:id", protectRoute, markMessageAsSeen);
+
+// Send a message
+messageRouter.post("/send", protectRoute, sendMessage);
 
 export default messageRouter;

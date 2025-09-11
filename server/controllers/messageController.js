@@ -61,10 +61,16 @@ export const markMessageAsSeen = async (req,res)=>{
 //Send message to selected user
 export const sendMessage = async (req,res) =>{
     try {
-        const {text, image} = req.body;
+        const {receiverId, text, image} = req.body;
 
-        const receiverId = req.params.id;
+        // const receiverId = req.params.id;
         const senderId  = req.user._id;
+
+         if (!receiverId) {
+            return res.status(400).json({ success: false, message: "receiverId is required" });
+        }
+
+        console.log("Received Image:", image);
         
         let imageUrl;
         if(image){
@@ -88,7 +94,7 @@ export const sendMessage = async (req,res) =>{
         res.json({success: true, newMessage});
 
    } catch (error) {
-        console.log(error.message);
+        console.log("SendMessage Error:", error.message);
         res.json({success: false, message: error.message})
     }
 }
