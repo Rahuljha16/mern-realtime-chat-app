@@ -58,7 +58,9 @@ export const AuthProvider = ({ children })=>{
         setOnlineUsers([]);
         axios.defaults.headers.common["token"] = null;
         toast.success("Logged out successfully")
+       if (socket?.connected) {
         socket.disconnect();
+    }
     }
 
     //Update profile function to handle user profile updates
@@ -95,7 +97,7 @@ export const AuthProvider = ({ children })=>{
         if(token){
             axios.defaults.headers.common["token"] = token;
         } else{
-            delete axios.defaults.headers.comma["token"];
+            delete axios.defaults.headers.common["token"];
         }
         },[token]);
 
